@@ -3,3 +3,4 @@ npm
 express
 mysql2 
 dotenv
+mariadb

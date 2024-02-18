@@ -1,4 +1,5 @@
-const Tweet = require('../models/tweet');
+const Tweet = require('../models/query/db');
+const { executeQuery } = require('../models/connection/connection');
 
 exports.createTweet = async (req, res) => {
   try {
@@ -13,10 +14,16 @@ exports.createTweet = async (req, res) => {
 
 exports.getAllTweets = async (req, res) => {
   try {
-    const tweets = await Tweet.find();
-    res.json(tweets);
-  } catch (error) {
-    console.error(error);
+    const pool = createPool(); // Create the connection pool
+    const conn = await pool.getConnection(); // Get a connection from the pool
+    const rows = await conn.query("SELECT * FROM tweets"); // Execute query
+    console.log("Tweets:", rows);
+    conn.release(); // Release the connection back to the pool
+    pool.end(); // Close the pool
+
+    res.json(rows); // Send the fetched tweets as JSON response
+  } catch (err) {
+    console.error("Error fetching tweets:", err);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
