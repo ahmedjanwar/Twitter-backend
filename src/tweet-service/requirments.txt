@@ -1,0 +1,5 @@
+node
+npm
+express
+mysql2 
+dotenv
