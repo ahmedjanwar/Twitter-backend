@@ -6,17 +6,16 @@ const Uname = process.env.USER_NAME;
 const Password = process.env.ROOT_PASSWORD;
 const database = process.env.DATABASE_NAME;
 
-let conn;
-
-    
+async function asyncFunction() {
+    let conn;
     try {
         // Create a new connection
-        conn =  mariadb.createConnection({
+        conn = await mariadb.createConnection({
             host: host_env,
             //port: '3306',
             user: Uname,
             password: Password,
-            database: database
+            database: database,
         });
 
         // Print connection thread
@@ -24,10 +23,10 @@ let conn;
     } catch (err) {
         // Print error
         console.log(err);
-    // } finally {
-    //     // Close connection
-    //     if (conn)  conn.close();
-    // 
+    } finally {
+        // Close connection
+        if (conn) await conn.close();
+    }
 }
 
-
+asyncFunction();
