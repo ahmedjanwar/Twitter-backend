@@ -3,13 +3,19 @@ const { executeQuery } = require('../models/connection/connection');
 const db = require("../models/query/db");
 
 exports.createTweet = async (req, res) => {
+  const { content } = req.params;
   try {
-    const { content, authorId } = req.body;
-    const tweet = await Tweet.create({ content, authorId });
-    res.status(201).json(tweet);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    // Use pool.query to get all contacts
+    var rows = await db.pool.query("insert into tweets (content,authorid) values (${content},111)");
+
+    res.json({ message: 'Tweet Added successfully' });
+
+    res.json(rows);
+  } catch (err) {
+      // Print errors
+      console.log(err);
+  } finally {
+  db.pool.end();
   }
 };
 
