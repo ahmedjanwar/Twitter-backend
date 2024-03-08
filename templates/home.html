@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Home</h1>
+  <ul>
+    {% for post in posts %}
+      <li>
+        <div class="post-header">
+          <a href="/user/{{ post.user.username }}">
+            <img src="{{ post.user.profile_pic }}" alt="{{ post.user.username }}" class="profile-pic">
+          </a>
+          <a href="/user/{{ post.user.username }}">
+            <strong>{{ post.user.username }}</strong>
+          </a>
+          <span class="timestamp">{{ post.created_at }}</span>
+        </div>
+        <p>{{ post.content }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
