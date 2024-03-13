@@ -22,6 +22,9 @@ This project consists of several microservices designed to create a Twitter-like
 6. **Fanout Service: NodeJS**
    - Manages subscriptions and broadcasts events to subscribers.
 
+## Architecture
+<img width="873" alt="Screenshot 2024-02-22 at 16 27 59" src="https://github.com/ahmedjanwar/Twitter-backend/assets/57673382/5e8ba70c-c311-4f33-961e-2a23875286c0">
+
 ## Technologies Used
 
 - **Programming Languages:** [Java, Python, Node.js, Go]
