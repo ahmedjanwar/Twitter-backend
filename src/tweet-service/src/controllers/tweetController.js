@@ -5,17 +5,18 @@ const db = require("../models/query/db");
 exports.createTweet = async (req, res) => {
   const { content } = req.body; 
   try {
-    // Use pool.query to get all contacts
-    var rows = await db.pool.query("insert into tweets (content,authorid) values (${content},111)");
-
-    res.json({ message: 'Tweet Added successfully' });
-
-    res.json(rows);
+    // Execute the SQL query to insert a new tweet
+    const result = await pool.query("INSERT INTO tweets (content, authorid) VALUES (?, 111)", [content]);
+    
+    // Send a success response
+    res.json({ message: 'Tweet added successfully' });
   } catch (err) {
-      // Print errors
-      console.log(err);
+    // Log and send error response if any
+    console.error("Error creating tweet:", err);
+    res.status(500).json({ error: 'An error occurred while creating the tweet' });
   } finally {
-  db.pool.end();
+    // Close the database connection pool
+    pool.end();
   }
 };
 
