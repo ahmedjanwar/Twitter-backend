@@ -1,51 +1,29 @@
-const Tweet = require('../models/query/db');
-const { executeQuery } = require('../models/connection/connection');
-const db = require("../models/query/db");
+
+const Tweet = require("../models/query/tweet");
 
 exports.createTweet = async (req, res) => {
-  const { content } = req.body; 
+  const { content, authorId } = req.body;
   try {
-    // Execute the SQL query to insert a new tweet
-    const result = await pool.query("INSERT INTO tweets (content, authorid) VALUES (?, 111)", [content]);
-    
-    // Send a success response
-    res.json({ message: 'Tweet added successfully' });
-  } catch (err) {
-    // Log and send error response if any
-    console.error("Error creating tweet:", err);
-    res.status(500).json({ error: 'An error occurred while creating the tweet' });
-  } finally {
-    // Close the database connection pool
-    pool.end();
-  }
-};
-
-exports.getAllTweets = async (req, res) => {
-  try {
-    // Use pool.query to get all contacts
-    var rows = await db.pool.query("select * from tweets");
-
-    // Print list of contacts
-    for (i = 0, len = rows.length; i < len; i++) {
-        console.log(`(id=${rows[i].id}) ${rows[i].content} ${rows[i].authorId} <${rows[i].createdAt}>`);
-    }
-
-    res.json(rows);
-  } catch (err) {
-      // Print errors
-      console.log(err);
-  } finally {
-  db.pool.end();
+    const tweetId = await Tweet.create(content, authorId);
+    // Convert tweetId to string before sending the response
+    res.status(201).json({ id: tweetId.toString(), message: "Tweet created successfully" });
+  } catch (error) {
+    console.error("Error creating tweet:", error);
+    res.status(500).json({ error: "An error occurred while creating the tweet" });
   }
 };
 
 exports.deleteTweet = async (req, res) => {
+  const { tweetId } = req.params;
   try {
-    const { tweetId } = req.params;
-    await Tweet.findByIdAndDelete(tweetId);
-    res.json({ message: 'Tweet deleted successfully' });
+    const isDeleted = await Tweet.delete(tweetId);
+    if (isDeleted) {
+      res.json({ message: "Tweet deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Tweet not found" });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error deleting tweet:", error);
+    res.status(500).json({ error: "An error occurred while deleting the tweet" });
   }
 };
