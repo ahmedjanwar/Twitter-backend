@@ -19,9 +19,9 @@ func main() {
 	router := mux.NewRouter()
 
 	// Define HTTP endpoints
-	router.HandleFunc("/timeline/{userID}", timeline.GetUserTimeline).Methods("GET")
+	router.HandleFunc("/timeline", timeline.GetUserTimeline).Methods("GET")
 
 	// Start the HTTP server
-	log.Println("Server started on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Println("Server started on port 3001")
+	log.Fatal(http.ListenAndServe(":3001", router))
 }

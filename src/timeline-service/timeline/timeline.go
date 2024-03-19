@@ -1,28 +1,28 @@
 package timeline
 
 import (
+	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
-
 	"timeline/db"
-
-	"github.com/gorilla/mux"
 )
 
 type Timeline struct {
-	ID        int    `json:"id"`
-	UserID    int    `json:"userId"`
-	Content   string `json:"content"`
-	Timestamp string `json:"timestamp"`
+	ID        int            `json:"id"`
+	Content   string         `json:"content"`
+	AuthorID  int            `json:"authorId"`
+	CreatedAt string         `json:"createdAt"`
+	Comments  sql.NullString `json:"comments"`
+	Likes     int            `json:"likes"`
 }
 
 func GetUserTimeline(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	userID := params["userID"]
-
-	// Query the database for user's timeline
-	rows, err := db.DB.Query("SELECT id, user_id, content, timestamp FROM timeline WHERE user_id = ?", userID)
+	log.Println("Getting users timeline")
+	// Query the database for all tweets
+	rows, err := db.DB.Query("SELECT id, content, authorid, createdAt, comments, likes FROM tweets")
 	if err != nil {
+		log.Println("Error querying database:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -31,14 +31,23 @@ func GetUserTimeline(w http.ResponseWriter, r *http.Request) {
 	var timelines []Timeline
 	for rows.Next() {
 		var timeline Timeline
-		err := rows.Scan(&timeline.ID, &timeline.UserID, &timeline.Content, &timeline.Timestamp)
+		err := rows.Scan(&timeline.ID, &timeline.Content, &timeline.AuthorID, &timeline.CreatedAt, &timeline.Comments, &timeline.Likes)
 		if err != nil {
+			log.Println("Error scanning rows:", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		timelines = append(timelines, timeline)
 	}
 
+	// Check if any rows were found
+	if len(timelines) == 0 {
+		log.Println("No tweets found")
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	// Set response header and encode timelines to JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(timelines)
 }
