@@ -18,8 +18,17 @@ type Timeline struct {
 func GetUserTimeline(w http.ResponseWriter, r *http.Request) {
 	log.Println("Getting users timeline")
 
-	// Make HTTP GET request to fetch all tweets
-	resp, err := http.Get("http://localhost:3000/tweets/all")
+	// Extract tweetIds query parameter, if provided
+	tweetIds := r.URL.Query().Get("tweetIds")
+
+	// Build URL for the tweets endpoint with query parameters
+	tweetsURL := "http://localhost:3000/tweets/all"
+	if tweetIds != "" {
+		tweetsURL += "?tweetIds=" + tweetIds
+	}
+
+	// Make HTTP GET request to fetch tweets
+	resp, err := http.Get(tweetsURL)
 	if err != nil {
 		log.Println("Error fetching tweets:", err)
 		w.WriteHeader(http.StatusInternalServerError)

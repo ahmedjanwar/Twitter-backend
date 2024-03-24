@@ -13,12 +13,18 @@ class Tweet {
     }
   }
 
-  static async getAll() {
+  static async getAll(tweetIds) {
     try {
-      const result = await db.pool.query(
-        "SELECT * FROM tweets"
-      );
-      return result; // Return all tweets
+      let query = "SELECT * FROM tweets";
+      let queryParams = [];
+      
+      if (tweetIds && tweetIds.length > 0) {
+        query += " WHERE id IN (?)"; // Adjust query to filter by specific tweet IDs
+        queryParams.push(tweetIds);
+      }
+      
+      const result = await db.pool.query(query, queryParams);
+      return result;
     } catch (error) {
       throw error;
     }

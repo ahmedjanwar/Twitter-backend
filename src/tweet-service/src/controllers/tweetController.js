@@ -11,11 +11,17 @@ exports.createTweet = async (req, res) => {
     res.status(500).json({ error: "An error occurred while creating the tweet" });
   }
 };
-
 exports.getTweet = async (req, res) => {
+  const { tweetIds } = req.query; // Extract tweetIds from query parameters
   try {
-    const tweets = await Tweet.getAll(); // Get all tweets
-    res.status(200).json({ tweets, message: "List of tweets" }); // Send all tweets in response
+    let tweets;
+    if (tweetIds) {
+      const tweetIdList = tweetIds.split(',').map(id => parseInt(id)); // Split and convert to array of integers
+      tweets = await Tweet.getAll(tweetIdList); // Pass tweet ID array to getAll method
+    } else {
+      tweets = await Tweet.getAll(); // If no tweetIds specified, get all tweets
+    }
+    res.status(200).json({ tweets, message: "List of tweets" });
   } catch (error) {
     console.error("Error fetching tweets:", error);
     res.status(500).json({ error: "An error occurred while fetching the tweets" });
