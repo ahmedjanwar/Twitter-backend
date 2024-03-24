@@ -13,6 +13,17 @@ class Tweet {
     }
   }
 
+  static async getAll() {
+    try {
+      const result = await db.pool.query(
+        "SELECT * FROM tweets"
+      );
+      return result; // Return all tweets
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async delete(tweetId) {
     try {
       const result = await db.pool.query(

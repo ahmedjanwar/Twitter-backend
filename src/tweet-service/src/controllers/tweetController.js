@@ -12,6 +12,16 @@ exports.createTweet = async (req, res) => {
   }
 };
 
+exports.getTweet = async (req, res) => {
+  try {
+    const tweets = await Tweet.getAll(); // Get all tweets
+    res.status(200).json({ tweets, message: "List of tweets" }); // Send all tweets in response
+  } catch (error) {
+    console.error("Error fetching tweets:", error);
+    res.status(500).json({ error: "An error occurred while fetching the tweets" });
+  }
+};
+
 exports.deleteTweet = async (req, res) => {
   const { tweetId } = req.params;
   try {
