@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const RabbitMQ = require('./rabbitmq'); // Import RabbitMQ module
-const rabbitmq = new RabbitMQ('amqp://localhost'); // Replace with your RabbitMQ connection URL
-const pool = require('./db'); 
+// const RabbitMQ = require('./rabbitmq'); // Import RabbitMQ module
+// const rabbitmq = new RabbitMQ('amqp://localhost'); // Replace with your RabbitMQ connection URL
+const pool = require('../connection/db'); 
 
 module.exports = (params) => {
     const { CommentService } = params;
