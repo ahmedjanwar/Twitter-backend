@@ -2,7 +2,6 @@
 const Tweet = require("../models/query/tweet");
 
 exports.createTweet = async (req, res) => {
-  const { content, authorId } = req.body;
   try {
     const tweetId = await Tweet.create(content, authorId);
     // Convert tweetId to string before sending the response
