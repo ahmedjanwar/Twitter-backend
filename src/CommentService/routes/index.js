@@ -1,29 +1,33 @@
 const express = require('express');
-const router = express.Router();
-// const RabbitMQ = require('./rabbitmq'); // Import RabbitMQ module
-// const rabbitmq = new RabbitMQ('amqp://localhost'); // Replace with your RabbitMQ connection URL
-const pool = require('../connection/db'); 
+const app = express();
+const port = process.env.PORT || 3000;
 
-module.exports = (params) => {
-    const { CommentService } = params;
+// Import functions from the utility script
+const { publishCommentMessage, saveCommentToDatabase } = require('./path/to/utility/script');
 
-    router.post('/', async (req, res, next) => {
-        const { comment, userId, tweetId } = req.body;
-        try {
-            // Insert comment into MariaDB
-            const connection = await pool.getConnection();
-            await connection.execute('INSERT INTO comments (comment, userId, tweetId) VALUES (?, ?, ?)', [comment, userId, tweetId]);
-            connection.release();
-            
-            // Publish comment message to RabbitMQ
-            await rabbitmq.publish('comment', 'new_comment', { comment, userId, tweetId });
-            
-            return res.json({ success: true });
-        } catch (err) {
-            console.error('Error saving comment:', err);
-            return res.status(500).json({ error: 'Failed to save comment' });
-        }
-    });
+// Middleware
+app.use(express.json()); // Parse JSON requests
 
-    return router;
-};
+// Example route to handle comment submission
+app.post('/comments', async (req, res) => {
+    const { commentText, userId, tweetId } = req.body;
+    try {
+        await publishCommentMessage(commentText, userId, tweetId);
+        await saveCommentToDatabase(commentText, userId, tweetId);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error handling comment submission:', error);
+        res.status(500).json({ error: 'Failed to handle comment submission' });
+    }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal server error' });
+});
+
+// Start server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
