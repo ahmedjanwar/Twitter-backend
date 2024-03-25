@@ -1,5 +1,3 @@
-
-from client_func import DeleteFollower, EnterChatRoom
 import socket
 import os
 import time
