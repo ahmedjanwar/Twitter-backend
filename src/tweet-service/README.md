@@ -1,4 +1,4 @@
-# Xclone
+# X
 A basic and user friendly twitter in python3 and MySQL server database in the backend
 
 ---
