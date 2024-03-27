@@ -1,0 +1,92 @@
+/* Resetting some default browser styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+header {
+    background-color: #00acee;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Main content container */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Tweet box styling */
+.tweet-box {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* Styling for tweets */
+.tweet {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* Styling for user information */
+.user-info {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Styling for tweet content */
+.tweet-content {
+    margin-bottom: 10px;
+}
+
+/* Styling for timestamp */
+.timestamp {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+/* Styling for likes and comments section */
+.interaction-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.interaction-section button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Styling for comments */
+.comments {
+    margin-top: 10px;
+}
+
+.comment {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 10px;
+    background-color: #eee;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Twitter Clone</h1>
+    </header>
+
+    <div class="container">
+        <div class="tweet-box">
+            <textarea id="tweetContent" placeholder="What's happening?"></textarea>
+            <button onclick="postTweet()">Post</button>
+        </div>
+
+        <!-- Sample Tweet -->
+        <div class="tweet">
+            <div class="user-info">John Doe (@johndoe)</div>
+            <div class="tweet-content">This is a sample tweet! #twitterclone</div>
+            <div class="timestamp">27 March 2024</div>
+            <div class="interaction-section">
+                <button onclick="likeTweet(this)">Like</button>
+                <span class="like-count">0</span>
+                <button onclick="commentTweet(this)">Comment</button>
+            </div>
+            <div class="comments">
+                <!-- Comment section will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Twitter Clone
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
